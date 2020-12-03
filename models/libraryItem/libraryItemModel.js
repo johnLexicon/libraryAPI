@@ -37,6 +37,18 @@ exports.addLibraryItem = async (req, res, next) => {
     }
 }
 
+exports.editLibraryItem = async (req, res, next) => {
+    try{
+        const libraryItem = await LibraryItem.findByIdAndUpdate(req.params.id, req.body, {new : true, useFindAndModify: false });
+        if(!libraryItem){
+            return res.status(422).send({errorMessage: `No library item with id: ${req.params.id} was found`});
+        }
+        res.status(200).send(libraryItem);
+    } catch(error) {
+        next(error);
+    }
+}
+
 exports.deleteLibraryItem = async (req, res, next) => {
     try{
         const deletedItem = await LibraryItem.findByIdAndDelete(req.params.id, { useFindAndModify: false })
