@@ -3,7 +3,7 @@ const LibraryItem = require('./libraryItemSchema');
 
 exports.getLibraryItems = async (req, res, next) => {
     try{
-        const libraryItems = await LibraryItem.find();
+        const libraryItems = await LibraryItem.find({categoryId: req.params.categoryId});
         res.status(200).send(libraryItems);
     }catch(error){
         next(error);
