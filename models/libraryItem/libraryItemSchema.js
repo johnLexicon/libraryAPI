@@ -9,7 +9,7 @@ const libraryItemSchema = mongoose.Schema({
     borrower: {type: String},
     borrowDate: {type: Date},
     itemType: {type: String, required: true},
-    categoryId: {type: mongoose.SchemaTypes.ObjectId, required: true, ref: 'Category' }
+    categoryId: {type: mongoose.SchemaTypes.ObjectId, required: true, ref: 'Category' },
 }, {collection: "LibraryItem"});
 
 module.exports = mongoose.model("LibraryItem", libraryItemSchema);

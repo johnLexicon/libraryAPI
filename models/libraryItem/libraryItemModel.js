@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const LibraryItem = require('./libraryItemSchema');
+const Category = require('../category/categorySchema');
 
 exports.getLibraryItems = async (req, res, next) => {
     try{
@@ -26,6 +27,9 @@ exports.addLibraryItem = async (req, res, next) => {
     try{
         const itemToAdd = Object.assign({ categoryId: req.params.categoryId }, req.body);
         const libraryItem = await LibraryItem.create(itemToAdd);
+        const result = await Category.findByIdAndUpdate(req.params.categoryId, {
+            $push: { libraryItems: libraryItem._id }
+        }, { safe: true, upsert: true});
         res.status(201).send(libraryItem);
     } catch(error){
         next(error)

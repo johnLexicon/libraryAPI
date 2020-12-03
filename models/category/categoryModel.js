@@ -1,4 +1,5 @@
 const Category = require('./categorySchema');
+const LibraryItem = require('../libraryItem/libraryItemSchema');
 
 exports.categoryExistsCheck = async (req, res, next) => {
     try{
@@ -14,7 +15,13 @@ exports.categoryExistsCheck = async (req, res, next) => {
 
 exports.getCategories = async (req, res, next) => {
     try{
-        const categories = await Category.find();
+        const includeItems = req.query.includeItems;
+        let categories = undefined;
+        if(includeItems && includeItems === 'true'){
+            categories = await Category.find().populate({path:'libraryItems', model: LibraryItem }).sort('categoryName');
+        } else {
+            categories = await Category.find().select('-libraryItems');
+        }
         res.status(200).send(categories);
     }catch(error){
         next(error);
