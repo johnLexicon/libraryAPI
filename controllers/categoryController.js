@@ -8,4 +8,7 @@ router.get('/:id', categoryModel.getCategory);
 router.post('/', categoryModel.categoryExistsCheck, categoryModel.addCategory);
 
 router.put('/:id', categoryModel.categoryExistsCheck, categoryModel.editCategory);
+
+router.delete('/:id', categoryModel.deleteCategory);
+
 module.exports = router;

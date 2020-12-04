@@ -60,3 +60,20 @@ exports.editCategory = async (req, res, next) => {
         next(error)
     }
 }
+
+exports.deleteCategory = async (req, res, next) => {
+    try{
+        const category = await Category.findById(req.params.id);
+
+        if(!category){
+            return res.status(422).send({errorMessage: `No category with id: ${req.params.id} was found`})
+        }
+        if(category.libraryItems.length > 0){
+            return res.status(422).send({errorMessage: `Category can not be deleted. It contains library items`})
+        }
+        const deletedCategory = await Category.findByIdAndDelete(req.params.id, { useFindAndModify: false })
+        res.status(200).send(deletedCategory);
+    } catch(error) {
+        next(error);
+    }
+}
